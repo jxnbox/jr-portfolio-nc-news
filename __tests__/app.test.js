@@ -14,7 +14,7 @@ describe('1. GET api topics', () => {
                 .get('/api/topic')
                 .expect(200)
         })
-        it('returns an object back to the user', () => {
+        it('returns an array back to the user', () => {
             return request(app)
                 .get('/api/topic')
                 .expect(200)
