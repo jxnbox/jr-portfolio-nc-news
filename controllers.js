@@ -1,10 +1,20 @@
-const {getTopicModel} = require('./models')
+const {
+    getTopicModel,
+    getArticleModel
+} = require('./models')
 
 exports.getTopic = (req, res, next) => {
     getTopicModel()
     .then((topics) => {
         res.status(200).send(topics);
     })
-    .catch(next)
+    .catch(next);
+}
 
+exports.getArticle = (req, res, next) => {
+    getArticleModel()
+    .then((articles) => {
+        res.status(200).send({articles});
+    })
+    .catch(next);
 }
