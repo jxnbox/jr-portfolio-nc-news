@@ -85,7 +85,7 @@ describe('2. GET api/articles', () => {
     })
 })
 
-describe.only('3. Get api/articles/:article_id', () => {
+describe('3. Get api/articles/:article_id', () => {
     describe('a. status 200 & data', () => {
         it('returns 200 status code & the article data object with the corresponding article_id back to the user', () => {
             return request(app)
@@ -112,9 +112,19 @@ describe.only('3. Get api/articles/:article_id', () => {
     })
 
     describe('b. error handling', () => {
+        it('send a 400 status code when a user inputs a bad request', () => {
+            return request(app)
+                .get('/api/articles/article3')
+                .expect(400)
+                .then ((res) => {
+                    const {msg} = res.body;
+                    expect(msg).toBe('Bad Request')
+                })
+        })
+
         it('send a 404 status code when user inputs a bad path', () => {
             return request(app)
-                .get('/api/articles/13')
+                .get('/api/artiales/3')
                 .expect(404)
                 .then ((res) => {
                     const {msg} = res.body;

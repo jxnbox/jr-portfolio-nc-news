@@ -7,6 +7,7 @@ const {
 } = require('./controllers')
 const {
     notFound,
+    errorHandler
 } = require('./controllers.err')
 
 app.use(express.json());
@@ -16,5 +17,7 @@ app.get('/api/articles', getArticle)
 app.get('/api/articles/:article_id', getArticleById)
 
 app.all('/*', notFound)
+
+app.use(errorHandler)
 
 module.exports = {app}

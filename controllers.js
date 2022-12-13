@@ -28,7 +28,7 @@ exports.getArticleById = (req, res, next) => {
         if (article.length !== 0) {
             res.status(200).send({article})
         } else {
-            next()
+            next();
         }
     })
     .catch(next);
