@@ -50,7 +50,7 @@ describe('2. GET api articles', () => {
                 .get('/api/articles')
                 .expect(200)
                 .then( (res) => {
-                    const articles = res.body;
+                    const {articles} = res.body;
                     expect(articles).toBeInstanceOf(Array);
                     expect(articles.length).toBe(12);
                     articles.forEach(article => {
@@ -63,12 +63,11 @@ describe('2. GET api articles', () => {
                                 body : expect.any(String),
                                 created_at : expect.any(String),
                                 votes : expect.any(Number),
-                                comment_count : expect.any(Number)
+                                comment_count : expect.any(String)
                             })
                         )
                     })
-                    expect(articles[0].article_id).toBe(3);
-                    expect(articles[articles.length - 1].article_id).toBe(7);
+                    expect(articles).toBeSortedBy('created_at', {descending : true});
                 })
         })
     })   

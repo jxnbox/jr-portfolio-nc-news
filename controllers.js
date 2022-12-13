@@ -14,7 +14,7 @@ exports.getTopic = (req, res, next) => {
 exports.getArticle = (req, res, next) => {
     getArticleModel()
     .then((articles) => {
-        res.status(200).send(articles);
+        res.status(200).send({articles});
     })
     .catch(next);
 }
