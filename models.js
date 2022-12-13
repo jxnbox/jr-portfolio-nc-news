@@ -1,5 +1,6 @@
 const db = require('./db/connection');
-const articles = require('./db/data/test-data/articles');
+
+
 
 exports.getTopicModel = () => {
     return db.query('SELECT * FROM topics;')
@@ -14,3 +15,10 @@ exports.getArticleModel = () => {
         return articles.rows;
     })
 };
+
+exports.getArticleByIdModels = (article_id) => {    
+    return db.query('SELECT * FROM articles WHERE article_id = $1;', [article_id])
+    .then((article) => {
+        return article.rows;
+    })
+}
