@@ -45,7 +45,7 @@ describe('1. GET api topics', () => {
 
 describe('2. GET api articles', () => {
     describe('a. status 200 & Data', () => {
-        it('returns 200 status code & an array back to the user', () => {
+        it('returns 200 status code & an array back to the user where the data is in descending order by created_at and a comment count', () => {
             return request(app)
                 .get('/api/articles')
                 .expect(200)
@@ -62,10 +62,13 @@ describe('2. GET api articles', () => {
                                 author : expect.any(String),
                                 body : expect.any(String),
                                 created_at : expect.any(String),
-                                votes : expect.any(Number)
+                                votes : expect.any(Number),
+                                comment_count : expect.any(Number)
                             })
                         )
                     })
+                    expect(articles[0].article_id).toBe(3);
+                    expect(articles[articles.length - 1].article_id).toBe(7);
                 })
         })
     })   
