@@ -133,7 +133,7 @@ describe('3. Get api/articles/:article_id', () => {
 
         it('send a 404 status code when user inputs a valid id but data does not exist', () => {
             return request(app)
-                .get('/api/artiales/99999')
+                .get('/api/articles/99999')
                 .expect(404)
                 .then ((res) => {
                     const {msg} = res.body;

@@ -3,5 +3,15 @@ exports.notFound = (req, res, next) => {
 }
 
 exports.handleCustomError = (err, req, res, next) => {
-    res.status(400).send({ msg: "Bad Request" });
+    if(err.code === "22P02") {
+        res.status(400).send({ msg: "Bad Request" });
+    } else if (err.rows.length === 0){
+        res.status(404).send({msg : 'Not Found'});
+    } else {
+        next(err);
+    }
+  };
+
+exports.handle500Error = (err, req, res, next) => {
+    res.status(500).send({ msg: "Internal Server Error" });
   };

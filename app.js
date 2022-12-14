@@ -7,7 +7,8 @@ const {
 } = require('./controllers')
 const {
     notFound,
-    handleCustomError
+    handleCustomError,
+    handle500Error
 } = require('./controllers.err');
 
 app.get('/api/topic', getTopic);
@@ -17,5 +18,7 @@ app.get('/api/articles/:article_id', getArticleById);
 app.all('/*', notFound);
 
 app.use(handleCustomError);
+
+app.use(handle500Error);
 
 module.exports = {app}
