@@ -7,17 +7,15 @@ const {
 } = require('./controllers')
 const {
     notFound,
-    errorHandler
-} = require('./controllers.err')
+    handleCustomError
+} = require('./controllers.err');
 
-app.use(express.json());
+app.get('/api/topic', getTopic);
+app.get('/api/articles', getArticle);
+app.get('/api/articles/:article_id', getArticleById);
 
-app.get('/api/topic', getTopic)
-app.get('/api/articles', getArticle)
-app.get('/api/articles/:article_id', getArticleById)
+app.all('/*', notFound);
 
-app.all('/*', notFound)
-
-app.use(errorHandler)
+app.use(handleCustomError);
 
 module.exports = {app}
