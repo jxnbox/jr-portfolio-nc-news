@@ -13,5 +13,5 @@ exports.handleCustomError = (err, req, res, next) => {
   };
 
 exports.handle500Error = (err, req, res, next) => {
-    if(err) res.status(500).send({ msg: "Internal Server Error" });
+    if (err) res.status(500).send({ msg: "Internal Server Error" });
   };
