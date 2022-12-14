@@ -8,7 +8,7 @@ const { app } = require("../app");
 afterAll(() => db.end());
 beforeEach( () => seed(testData));
 
-describe('1. GET api topics', () => {
+describe('1. GET api/topics', () => {
     describe('a. status 200 & Data', () => {
         it('returns 200 status code & an array back to the user', () => {
             return request(app)
@@ -37,13 +37,13 @@ describe('1. GET api topics', () => {
                 .expect(404)
                 .then ((res) => {
                     const {msg} = res.body;
-                    expect(msg).toBe('Path not found')
+                    expect(msg).toBe('Not Found')
                 })
         })
     })
 })
 
-describe('2. GET api articles', () => {
+describe('2. GET api/articles', () => {
     describe('a. status 200 & Data', () => {
         it('returns 200 status code & an array back to the user where the data is in descending order by created_at and a comment count', () => {
             return request(app)
@@ -71,15 +71,50 @@ describe('2. GET api articles', () => {
                 })
         })
     })   
-    
+})
+
+describe('3. Get api/articles/:article_id', () => {
+    describe('a. status 200 & data', () => {
+        it('returns 200 status code & the article data object with the corresponding article_id back to the user', () => {
+            return request(app)
+            .get('/api/articles/3')
+            .expect(200)
+            .then( (res) => {
+                const {article} = res.body;
+                expect(article).toEqual(
+                    expect.objectContaining({
+                        article_id : 3,
+                        title : 'Eight pug gifs that remind me of mitch',
+                        topic : 'mitch',
+                        author : 'icellusedkars',
+                        body : 'some gifs',
+                        created_at : '2020-11-03T09:12:00.000Z',
+                        votes : 0,
+                    })
+                )
+
+            })
+        })
+    })
+
     describe('b. error handling', () => {
         it('send a 404 status code when user inputs a bad path', () => {
             return request(app)
-                .get('/api/artikle')
+                .get('/api/artiales/3')
                 .expect(404)
                 .then ((res) => {
                     const {msg} = res.body;
-                    expect(msg).toBe('Path not found')
+                    expect(msg).toBe('Not Found')
+                })
+        })
+
+        it('send a 404 status code when user inputs a valid id but data does not exist', () => {
+            return request(app)
+                .get('/api/articles/99999')
+                .expect(404)
+                .then ((res) => {
+                    const {msg} = res.body;
+                    expect(msg).toBe('Not Found')
                 })
         })
     })

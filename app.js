@@ -2,17 +2,23 @@ const express = require('express');
 const app = express();
 const {
     getTopic,
-    getArticle
+    getArticle,
+    getArticleById
 } = require('./controllers')
 const {
     notFound,
-} = require('./controllers.err')
+    handleCustomError,
+    handle500Error
+} = require('./controllers.err');
 
-app.use(express.json());
+app.get('/api/topic', getTopic);
+app.get('/api/articles', getArticle);
+app.get('/api/articles/:article_id', getArticleById);
 
-app.get('/api/topic', getTopic)
-app.get('/api/articles', getArticle)
+app.all('/*', notFound);
 
-app.all('/*', notFound)
+app.use(handleCustomError);
+
+app.use(handle500Error);
 
 module.exports = {app}
