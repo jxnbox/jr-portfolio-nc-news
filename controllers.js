@@ -35,8 +35,8 @@ exports.getCommentsById = (req, res, next) => {
     const article_id = req.params.article_id;
 
     getCommentsByIdModel(article_id)
-    .then( (articles) => {
-        res.status(200).send(articles);
+    .then( (comments) => {
+        res.status(200).send(comments);
     })
     .catch(next);
 }

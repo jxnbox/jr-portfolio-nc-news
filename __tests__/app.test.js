@@ -150,8 +150,8 @@ describe('4. GET /api/articles/:article_id/comments', () => {
                    .get('/api/articles/7/comments')    
                    .expect(200)
                    .then( (res) => {
-                        const articles = res.body;
-                        expect(articles).toEqual([])
+                        const comments = res.body;
+                        expect(comments).toEqual([])
                    })
         })
     })
@@ -165,6 +165,16 @@ describe('4. GET /api/articles/:article_id/comments', () => {
                 .then ((res) => {
                     const {msg} = res.body;
                     expect(msg).toBe('Bad Request')
+                })
+        })
+
+        it('send a 404 status code when user inputs a valid ID datatype but ID is not in the data', () => {
+            return request(app)
+                .get('/api/articles/999/comments')
+                .expect(404)
+                .then ((res) => {
+                    const {msg} = res.body;
+                    expect(msg).toBe('Not Found')
                 })
         })
     })
