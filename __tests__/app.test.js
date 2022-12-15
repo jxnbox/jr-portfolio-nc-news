@@ -73,7 +73,7 @@ describe('2. GET api/articles', () => {
     })   
 })
 
-describe('3. Get api/articles/:article_id', () => {
+describe('3. GET api/articles/:article_id', () => {
     describe('a. status 200 & data', () => {
         it('returns 200 status code & the article data object with the corresponding article_id back to the user', () => {
             return request(app)
@@ -98,19 +98,68 @@ describe('3. Get api/articles/:article_id', () => {
     })
 
     describe('b. error handling', () => {
-        it('send a 404 status code when user inputs a bad path', () => {
+        it('send a 400 status code when user inputs a bad request', () => {
             return request(app)
-                .get('/api/artiales/3')
-                .expect(404)
+                .get('/api/articles/article3')
+                .expect(400)
                 .then ((res) => {
                     const {msg} = res.body;
-                    expect(msg).toBe('Not Found')
+                    expect(msg).toBe('Bad Request')
                 })
         })
 
         it('send a 404 status code when user inputs a valid id but data does not exist', () => {
             return request(app)
                 .get('/api/articles/99999')
+                .expect(404)
+                .then ((res) => {
+                    const {msg} = res.body;
+                    expect(msg).toBe('Not Found')
+                })
+        })
+    })
+})
+
+describe('4. GET /api/articles/:article_id/comments', () => {
+    describe('a. status 200 & data', () => {
+        it('returns 200 status code & an array back to the user where the data', () => {
+            return request(app)
+            .get('/api/articles/3/comments')
+            .expect(200)
+            .then((res) => {
+                const articles = res.body;
+                expect(articles).toBeInstanceOf(Array);
+                expect(articles.length).toBe(2);
+                articles.forEach(article => {
+                    expect(article).toEqual(
+                        expect.objectContaining({
+                            article_id : 3,
+                            author : expect.any(String),
+                            body : expect.any(String),
+                            created_at : expect.any(String),
+                            votes : expect.any(Number)
+                        })
+                    )
+                })
+            })
+        })
+    })
+
+    describe('b. error handling', () => {
+
+        it('send a 400 status code when user inputs a bad request', () => {
+            return request(app)
+                .get('/api/articles/article3/comments')
+                .expect(400)
+                .then ((res) => {
+                    const {msg} = res.body;
+                    expect(msg).toBe('Bad Request')
+                })
+        })
+
+        it('send a 404 status code when user inputs a valid id but data does not exist', () => {
+            return request(app)
+                .get('/api/articles/13/comments')
                 .expect(404)
                 .then ((res) => {
                     const {msg} = res.body;

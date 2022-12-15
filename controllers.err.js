@@ -3,15 +3,21 @@ exports.notFound = (req, res, next) => {
 }
 
 exports.handleCustomError = (err, req, res, next) => {
-    if(err.code === "22P02") {
-        res.status(400).send({ msg: "Bad Request" });
-    } else if (err.rows.length === 0){
-        res.status(404).send({msg : 'Not Found'});
+    if (err.status && err.msg) {
+        res.status(err.status).send({ msg: err.msg });
     } else {
         next(err);
     }
-  };
+}
+
+exports.handlePSQLError = (err, req, res, next) => {
+    if(err.code === "22P02") {
+        res.status(400).send({ msg: "Bad Request" });
+    } else {
+        next(err);
+    }
+};
 
 exports.handle500Error = (err, req, res, next) => {
-    if (err) res.status(500).send({ msg: "Internal Server Error" });
-  };
+    res.status(500).send({ msg: "Internal Server Error" });
+};
