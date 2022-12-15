@@ -16,13 +16,39 @@ exports.getArticleModel = () => {
     })
 };
 
-exports.getArticleByIdModels = (article_id) => {    
-    return db.query('SELECT * FROM articles WHERE article_id = $1;', [article_id])
+exports.getArticleByIdModel = (article_id) => {    
+    return db.query('SELECT * FROM articles WHERE article_id = $1 ;', [article_id])
     .then((article) => {
         if (article.rows.length !== 0) {
             return article.rows[0];
         } else {
-            return Promise.reject(article);
+            return Promise.reject({status: 404, msg : 'Not Found'});
         }
     })
+}
+
+exports.getCommentsByIdModel = (article_id) => {
+
+    return Promise.all([
+        db.query('SELECT * FROM articles WHERE article_id = $1 ;', [article_id])
+            .then((article) => {
+            if (article.rows.length !== 0) {
+                return article.rows[0];
+            } else {
+                return Promise.reject({status: 404, msg : 'Not Found'});
+            }
+        }),
+        db.query('SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC', [article_id])
+        .then((comments) => {
+                return comments.rows;
+        })
+    ])
+    .then( (comments) => {
+        return comments[1];
+    })
+    .catch( (err) => {
+        return Promise.reject(err)
+    })
+
+
 }
