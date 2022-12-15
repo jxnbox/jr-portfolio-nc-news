@@ -92,7 +92,7 @@ describe('3. GET api/articles/:article_id', () => {
                         votes : 0,
                     })
                 )
-
+                
             })
         })
     })
@@ -122,7 +122,7 @@ describe('3. GET api/articles/:article_id', () => {
 
 describe('4. GET /api/articles/:article_id/comments', () => {
     describe('a. status 200 & data', () => {
-        it('returns 200 status code & an array back to the user where the data', () => {
+        it('returns 200 status code & an array back to the user where the data starts with the latest comment', () => {
             return request(app)
             .get('/api/articles/3/comments')
             .expect(200)
@@ -141,29 +141,30 @@ describe('4. GET /api/articles/:article_id/comments', () => {
                         })
                     )
                 })
+                expect(articles).toBeSorted({ descending: true })
             })
+        })
+
+        it('returns 200 status code & empty array when a valid ID is passed but contains no comments', () => {
+            return request(app)
+                   .get('/api/articles/7/comments')    
+                   .expect(200)
+                   .then( (res) => {
+                        const articles = res.body;
+                        expect(articles).toEqual([])
+                   })
         })
     })
 
     describe('b. error handling', () => {
 
-        it('send a 400 status code when user inputs a bad request', () => {
+        it('send a 400 status code when user inputs the wrong datatype for the ID', () => {
             return request(app)
                 .get('/api/articles/article3/comments')
                 .expect(400)
                 .then ((res) => {
                     const {msg} = res.body;
                     expect(msg).toBe('Bad Request')
-                })
-        })
-
-        it('send a 404 status code when user inputs a valid id but data does not exist', () => {
-            return request(app)
-                .get('/api/articles/13/comments')
-                .expect(404)
-                .then ((res) => {
-                    const {msg} = res.body;
-                    expect(msg).toBe('Not Found')
                 })
         })
     })

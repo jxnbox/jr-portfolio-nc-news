@@ -17,7 +17,7 @@ exports.getArticleModel = () => {
 };
 
 exports.getArticleByIdModel = (article_id) => {    
-    return db.query('SELECT * FROM articles WHERE article_id = $1;', [article_id])
+    return db.query('SELECT * FROM articles WHERE article_id = $1 ;', [article_id])
     .then((article) => {
         if (article.rows.length !== 0) {
             return article.rows[0];
@@ -28,12 +28,9 @@ exports.getArticleByIdModel = (article_id) => {
 }
 
 exports.getCommentsByIdModel = (article_id) => {
-    return db.query('SELECT * FROM comments WHERE article_id = $1', [article_id])
+
+    return db.query('SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC', [article_id])
     .then((article) => {
-        if (article.rows.length !== 0) {
             return article.rows;
-        } else {
-            return Promise.reject({status: 404, msg : 'Not Found'});
-        }
     })
 }

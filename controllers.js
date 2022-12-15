@@ -36,7 +36,6 @@ exports.getCommentsById = (req, res, next) => {
 
     getCommentsByIdModel(article_id)
     .then( (articles) => {
-        console.log(articles);
         res.status(200).send(articles);
     })
     .catch(next);
