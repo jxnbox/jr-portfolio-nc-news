@@ -4,7 +4,8 @@ const {
     getTopic,
     getArticle,
     getArticleById,
-    getCommentsById
+    getCommentsById,
+    postCommentById
 } = require('./controllers')
 const {
     notFound,
@@ -13,12 +14,14 @@ const {
     handlePSQLError
 } = require('./controllers.err');
 
+app.use(express.json());
+
 app.get('/api/topic', getTopic);
 app.get('/api/articles', getArticle);
 app.get('/api/articles/:article_id', getArticleById);
 app.get('/api/articles/:article_id/comments', getCommentsById);
 
-
+app.post('/api/articles/:article_id/comments', postCommentById)
 
 app.all('/*', notFound);
 app.use(handleCustomError);

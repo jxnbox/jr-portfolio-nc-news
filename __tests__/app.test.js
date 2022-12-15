@@ -141,7 +141,7 @@ describe('4. GET /api/articles/:article_id/comments', () => {
                         })
                     )
                 })
-                expect(articles).toBeSorted({ descending: true })
+                expect(articles).toBeSortedBy('created_at',{ descending: true })
             })
         })
 

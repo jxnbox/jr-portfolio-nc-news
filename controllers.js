@@ -40,3 +40,8 @@ exports.getCommentsById = (req, res, next) => {
     })
     .catch(next);
 }
+
+exports.postCommentById = (req, res, next) => {
+    const article_id = req.params.article_id;
+    const newComment = req.body;
+}
