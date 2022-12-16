@@ -115,4 +115,5 @@ exports.getUsersModel = () => {
     .then( (users) => {
         return users.rows;
     })
+    
 }
