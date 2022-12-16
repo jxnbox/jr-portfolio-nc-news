@@ -50,6 +50,32 @@ exports.getCommentsByIdModel = (article_id) => {
     })
 }
 
+exports.postNewUser = (newUser) => {
+    if (newUser.name && newUser.username && newUser.avatar_url) {
+        const {name, username, avatar_url} = newUser;
+
+        return db.query("INSERT INTO users (name, username, avatar_url) VALUES ($1, $2, $3) RETURNING *;", [name, username, avatar_url])
+        .then( (user) => {
+            return user.rows[0];
+        })
+        .catch( (err) => {
+            return Promise.reject(err);
+        })
+    } else if (newUser.name && newUser.username && !newUser.avatar_url) {
+        const {name, username} = newUser;
+
+        return db.query("INSERT INTO users (name, username) VALUES ($1, $2) RETURNING *;", [name, username])
+        .then( (user) => {
+            return user.rows[0];
+        })
+        .catch( (err) => {
+            return Promise.reject(err);
+        })
+    } else {
+        return Promise.reject({status :400, msg : "Bad Request"});
+    }
+}
+
 exports.postCommentByIdModels = (article_id, newComment) => {
 
     if (newComment.username && newComment.body) {
@@ -60,6 +86,7 @@ exports.postCommentByIdModels = (article_id, newComment) => {
             return comment.rows[0].body; 
         })
         .catch((err) => {
+            console.log(err)
             return Promise.reject(err);
         })
     } else {
