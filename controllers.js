@@ -5,7 +5,8 @@ const {
     getCommentsByIdModel,
     postCommentByIdModels,
     postNewUser,
-    patchVoteByIdModels
+    patchVoteByIdModels,
+    getUsersModel
 } = require('./models')
 
 exports.getTopic = (req, res, next) => {
@@ -74,4 +75,17 @@ exports.patchVoteById = (req, res, next) => {
         res.status(202).send({article})
     })
     .catch(next)
+}
+
+exports.getUsers = (req, res, next) => {
+
+    getUsersModel()
+    .then( (users) => {
+        res.status(200).send(users)
+    })
+    .catch(next);
+}
+
+exports.getArticleQuery = (req, res, next) => {
+    console.log(req.query)
 }
