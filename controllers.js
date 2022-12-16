@@ -4,7 +4,8 @@ const {
     getArticleByIdModel,
     getCommentsByIdModel,
     postCommentByIdModels,
-    postNewUser
+    postNewUser,
+    patchVoteByIdModels
 } = require('./models')
 
 exports.getTopic = (req, res, next) => {
@@ -70,6 +71,7 @@ exports.patchVoteById = (req, res, next) => {
 
     patchVoteByIdModels(article_id, incVotes)
     .then( (article) => {
-        res.status(202).send(article)
+        res.status(202).send({article})
     })
+    .catch(next)
 }

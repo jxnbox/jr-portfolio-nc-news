@@ -314,5 +314,57 @@ describe('6. POST /api/articles/:article_id/comments', () => {
 })
 
 describe('7. PATCH /api/articles/:article_id', () => {
+    describe('a. status 200 & data', () => {
+        it('returns 200 status code & the article with the updated vote', () => {
+            const inc_votes = {inc_votes : 5}
 
+            const result = {
+                article_id: 11,
+                title: "Am I a cat?",
+                topic: "mitch",
+                author: "icellusedkars",
+                body: "Having run out of ideas for articles, I am staring at the wall blankly, like a cat. Does this make me a cat?",
+                created_at: "2020-01-15T22:21:00.000Z",
+                votes: 5,
+              }
+
+            return request(app)
+            .patch('/api/articles/11')
+            .send(inc_votes)
+            .expect(202)
+            .then ( (res) => {
+                const {article} = res.body;
+                expect(article).toEqual(result)
+            })
+        })
+    })
+
+    describe('b. error handling', () => {
+        it('returns 404 status code when a valid id datatype is passed but id does not exist', () => {
+            const inc_votes = {inc_votes : 1}
+    
+            return request(app)
+                .patch('/api/articles/1111111')
+                .send(inc_votes)
+                .expect(404)
+        })
+
+        it('returns 400 status code when a invalid id datatype is passed', () => {
+            const inc_votes = {inc_votes : 1}
+    
+            return request(app)
+                .patch('/api/articles/article11')
+                .send(inc_votes)
+                .expect(400)
+        })
+
+        it('returns 400 status code when the object passed contains the wrong datatype', () => {
+            const inc_votes = {inc_votes : "1"}
+    
+            return request(app)
+                .patch('/api/articles/article11')
+                .send(inc_votes)
+                .expect(400)
+        })
+    })
 })
