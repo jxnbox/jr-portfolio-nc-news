@@ -370,7 +370,7 @@ describe('7. PATCH /api/articles/:article_id', () => {
             const inc_votes = {inc_votes : "hello"}
     
             return request(app)
-                .patch('/api/articles/article11')
+                .patch('/api/articles/7')
                 .send(inc_votes)
                 .expect(400)
                 .then ((res) => {
