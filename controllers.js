@@ -78,7 +78,6 @@ exports.patchVoteById = (req, res, next) => {
 }
 
 exports.getUsers = (req, res, next) => {
-
     getUsersModel()
     .then( (users) => {
         res.status(200).send(users)

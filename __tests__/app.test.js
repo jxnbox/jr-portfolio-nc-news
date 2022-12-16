@@ -384,7 +384,7 @@ describe('7. PATCH /api/articles/:article_id', () => {
 describe('8. GET /api/users', () => {
     describe('a. status 200 & data', () => {
         it('return a status code of 200 and an array of objects that contains all the users', () => {
-
+            
             return request(app)
             .get('/api/users')
             .expect(200)

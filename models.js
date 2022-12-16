@@ -110,9 +110,9 @@ exports.patchVoteByIdModels = (article_id, incVotes) => {
 }
 
 exports.getUsersModel = () => {
-
     return db.query('SELECT * FROM users;')
     .then( (users) => {
         return users.rows;
     })
+
 }
