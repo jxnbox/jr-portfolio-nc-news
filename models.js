@@ -86,10 +86,33 @@ exports.postCommentByIdModels = (article_id, newComment) => {
             return comment.rows[0].body; 
         })
         .catch((err) => {
-            console.log(err)
             return Promise.reject(err);
         })
     } else {
         return Promise.reject({status :400, msg : "Bad Request"});
     }
+}
+
+exports.patchVoteByIdModels = (article_id, incVotes) => {
+
+    return db.query('UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;', [incVotes.inc_votes, article_id])
+    .then( (updatedArticle) => {
+        if (updatedArticle.rows.length > 0) {
+            return updatedArticle.rows[0];
+        } else {
+            return Promise.reject({status : 404, msg : 'Not Found'})
+        }
+    })
+    .catch( (err) => {
+        return Promise.reject(err)
+    })
+
+}
+
+exports.getUsersModel = () => {
+
+    return db.query('SELECT * FROM users;')
+    .then( (users) => {
+        return users.rows;
+    })
 }
