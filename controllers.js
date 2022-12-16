@@ -3,6 +3,8 @@ const {
     getArticleModel,
     getArticleByIdModel,
     getCommentsByIdModel,
+    postCommentByIdModels,
+    postNewUser
 } = require('./models')
 
 exports.getTopic = (req, res, next) => {
@@ -44,4 +46,30 @@ exports.getCommentsById = (req, res, next) => {
 exports.postCommentById = (req, res, next) => {
     const article_id = req.params.article_id;
     const newComment = req.body;
+
+    postCommentByIdModels(article_id, newComment)
+    .then( (comment) => {
+        res.status(201).send({comment});
+    })
+    .catch(next);
+}
+
+exports.postNewUser = (req, res, next) => {
+    const newUser = req.body;
+
+    postNewUser(newUser)
+    .then( (user) => {
+        res.status(201).send({user})
+    })
+    .catch(next)
+}
+
+exports.patchVoteById = (req, res, next) => {
+    const article_id = req.params.article_id;
+    const incVotes = req.body;
+
+    patchVoteByIdModels(article_id, incVotes)
+    .then( (article) => {
+        res.status(202).send(article)
+    })
 }

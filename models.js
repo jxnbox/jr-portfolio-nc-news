@@ -28,7 +28,6 @@ exports.getArticleByIdModel = (article_id) => {
 }
 
 exports.getCommentsByIdModel = (article_id) => {
-
     return Promise.all([
         db.query('SELECT * FROM articles WHERE article_id = $1 ;', [article_id])
             .then((article) => {
@@ -47,8 +46,50 @@ exports.getCommentsByIdModel = (article_id) => {
         return comments[1];
     })
     .catch( (err) => {
-        return Promise.reject(err)
+        return Promise.reject(err);
     })
+}
 
+exports.postNewUser = (newUser) => {
+    if (newUser.name && newUser.username && newUser.avatar_url) {
+        const {name, username, avatar_url} = newUser;
 
+        return db.query("INSERT INTO users (name, username, avatar_url) VALUES ($1, $2, $3) RETURNING *;", [name, username, avatar_url])
+        .then( (user) => {
+            return user.rows[0];
+        })
+        .catch( (err) => {
+            return Promise.reject(err);
+        })
+    } else if (newUser.name && newUser.username && !newUser.avatar_url) {
+        const {name, username} = newUser;
+
+        return db.query("INSERT INTO users (name, username) VALUES ($1, $2) RETURNING *;", [name, username])
+        .then( (user) => {
+            return user.rows[0];
+        })
+        .catch( (err) => {
+            return Promise.reject(err);
+        })
+    } else {
+        return Promise.reject({status :400, msg : "Bad Request"});
+    }
+}
+
+exports.postCommentByIdModels = (article_id, newComment) => {
+
+    if (newComment.username && newComment.body) {
+        const {username, body} = newComment;
+            
+        return db.query('INSERT INTO comments (body, author, article_id) VALUES ($1, $2, $3) RETURNING *;', [body, username, article_id])
+        .then( (comment) => {
+            return comment.rows[0].body; 
+        })
+        .catch((err) => {
+            console.log(err)
+            return Promise.reject(err);
+        })
+    } else {
+        return Promise.reject({status :400, msg : "Bad Request"});
+    }
 }

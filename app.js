@@ -5,7 +5,9 @@ const {
     getArticle,
     getArticleById,
     getCommentsById,
-    postCommentById
+    postCommentById,
+    postNewUser,
+    patchVoteById
 } = require('./controllers')
 const {
     notFound,
@@ -21,7 +23,10 @@ app.get('/api/articles', getArticle);
 app.get('/api/articles/:article_id', getArticleById);
 app.get('/api/articles/:article_id/comments', getCommentsById);
 
+app.post('/api/users', postNewUser)
 app.post('/api/articles/:article_id/comments', postCommentById)
+
+app.patch('/api/articles/:article_id', patchVoteById)
 
 app.all('/*', notFound);
 app.use(handleCustomError);

@@ -179,3 +179,140 @@ describe('4. GET /api/articles/:article_id/comments', () => {
         })
     })
 })
+
+describe('5. POST /api/users', () => {
+    describe('a. status 201 & data', () => {
+        ('returns 201 status code and the object of the new user back to the user', () => {
+            
+            const newUser = {name: "jan", username: "jxnbox", avatar_url: "https://upload.wikimedia.org/wikipedia/en/thumb/7/73/Pikachu_artwork_for_Pok%C3%A9mon_Red_and_Blue.webp/220px-Pikachu_artwork_for_Pok%C3%A9mon_Red_and_Blue.webp.png"}
+
+            return request(app)
+            .post('/api/users')
+            .send(newUser)
+            .expect(201)
+            .then( (res) => {
+                const {user} = res.body;
+                expect(user).toEqual(newUser);
+            })
+           
+        })
+        it('when given a object with no avatar url returns 201 status code and the object of the new user back to the user', () => {
+            
+            const newUser = {name: "jan", username: "jxnbox"}
+
+            result = {name: "jan", username: "jxnbox", avatar_url: null}
+            return request(app)
+            .post('/api/users')
+            .send(newUser)
+            .expect(201)
+            .then( (res) => {
+                const {user} = res.body;
+                expect(user).toEqual(result);
+            })
+           
+        })
+
+    })
+
+    describe('b. error handling', () => {
+        it('return 400 status code when no name is given', () => {
+            const newUser = {username: "jxnbox"}
+            return request(app)
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            
+        })
+
+        it('return 400 status code when no username is given', () => {
+            const newUser = {name: 'jan'}
+            return request(app)
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            
+        })
+    })
+})
+
+describe('6. POST /api/articles/:article_id/comments', () => {
+    describe('a. status 201 & data', () => {
+        it('returns 201 status code and the object of the comment back to the user', () => {
+
+            const newCommentOnj = {username: 'icellusedkars', body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/7/comments')
+            .send(newCommentOnj)
+            .expect(201)
+            .then( (res) => {
+                const {comment} = res.body;
+                expect(comment).toEqual("amazing! 10/10");
+            })
+        })
+
+    })
+
+    describe('b. error handling', () => {
+        it('return 400 status code when the wrong datatype is given for the ID', () => {
+            const newCommentOnj = {username: 'icellusedkars', body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/article7/comments')
+            .send(newCommentOnj)
+            .expect(400)
+            .then( (res) => {
+                const {msg} = res.body
+                expect(msg).toBe("Bad Request")
+            })
+        })
+
+        it('return 404 status code when a valid ID datatype is given but ID does not exist', () => {
+
+            const newCommentOnj = {username: 'icellusedkars', body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/999/comments')
+            .send(newCommentOnj)
+            .expect(404)
+            .then( (res) => {
+                const {msg} = res.body
+                expect(msg).toBe('Not Found')
+            })
+
+        })
+
+        it('return 404 status code when a valid ID datatype is given but user does not exist', () => {
+
+            const newCommentOnj = {username: 'jxnbox', body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/7/comments')
+            .send(newCommentOnj)
+            .expect(404)
+            .then( (res) => {
+                const {msg} = res.body
+                expect(msg).toBe('Not Found')
+            })
+
+        })
+
+        it('return 400 status code when a valid ID datatype is given but the Object does not contain a username', () => {
+            const newCommentOnj = { body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/7/comments')
+            .send(newCommentOnj)
+            .expect(400)
+            .then( (res) => {
+                const {msg} = res.body
+                expect(msg).toBe('Bad Request')
+            })
+
+        })
+    })
+})
+
+describe('7. PATCH /api/articles/:article_id', () => {
+
+})
