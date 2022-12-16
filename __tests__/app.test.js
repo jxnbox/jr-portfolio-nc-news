@@ -179,3 +179,41 @@ describe('4. GET /api/articles/:article_id/comments', () => {
         })
     })
 })
+
+describe('5. POST /api/articles/:article_id/comments', () => {
+    describe('a. status 201 & data', () => {
+        it('returns 201 status code and the object of the comment back to the user', () => {
+            const newCommentOnj = { name: "jan", username: "jxnbox", body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/7/comments')
+            .send(newCommentOnj)
+            .expect(201)
+            .then( (res) => {
+                const {comment} = res.body;
+                expect(comment).toEqual("amazing! 10/10");
+            })
+        })
+
+    })
+
+    describe('b. error handling', () => {
+        it('return 400 status code when the wrong datatype is given for the ID', () => {
+            const newCommentOnj = { name: "jan", username: "jxnbox", body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/article7/comments')
+            .send(newCommentOnj)
+            .expect(400)
+        })
+
+        it('return 404 status code when a valid ID datatype is given but ID does not exist', () => {
+            const newCommentOnj = { name: "jan", username: "jxnbox", body: "amazing! 10/10"}
+
+            return request(app)
+            .post('/api/articles/999/comments')
+            .send(newCommentOnj)
+            .expect(404)
+        })
+    })
+})

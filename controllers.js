@@ -3,6 +3,7 @@ const {
     getArticleModel,
     getArticleByIdModel,
     getCommentsByIdModel,
+    postCommentByIdModels
 } = require('./models')
 
 exports.getTopic = (req, res, next) => {
@@ -44,4 +45,10 @@ exports.getCommentsById = (req, res, next) => {
 exports.postCommentById = (req, res, next) => {
     const article_id = req.params.article_id;
     const newComment = req.body;
+
+    postCommentByIdModels(article_id, newComment)
+    .then( (comment) => {
+        res.status(201).send({comment});
+    })
+    .catch(next);
 }
