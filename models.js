@@ -51,22 +51,18 @@ exports.getCommentsByIdModel = (article_id) => {
 }
 
 exports.postCommentByIdModels = (article_id, newComment) => {
-    const {username, name, body} = newComment;
-    return Promise.all([
-        db.query('INSERT INTO users (username, name) VALUES ($1, $2) RETURNING *', [username, name])
-        .then( (data) => {
-            return data.rows;
-        }),
-        db.query('INSERT INTO comments (body, author, article_id) VALUES ($1, $2, $3) RETURNING *;', [body, username, article_id])
-        .then( (comment) => {
-            return comment;
+
+    if (newComment.username && newComment.body) {
+        const {username, body} = newComment;
             
+        return db.query('INSERT INTO comments (body, author, article_id) VALUES ($1, $2, $3) RETURNING *;', [body, username, article_id])
+        .then( (comment) => {
+            return comment.rows[0].body; 
         })
-    ])
-    .then( (res) => {
-        return res[1].rows[0].body;
-    })
-    .catch((err) => {
-        return Promise.reject(err);
-    })
+        .catch((err) => {
+            return Promise.reject(err);
+        })
+    } else {
+        return Promise.reject({status :400, msg : "Bad Request"});
+    }
 }
