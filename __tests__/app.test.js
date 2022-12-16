@@ -381,29 +381,7 @@ describe('7. PATCH /api/articles/:article_id', () => {
     })
 })
 
-describe('8. GET /api/users', () => {
-    describe('a. status 200 & data', () => {
-        it('return a status code of 200 and an array of objects that contains all the users', () => {
 
-            return request(app)
-            .get('/api/users')
-            .expect(200)
-            .then( (res) => {
-                const usersArr = res.body;
-                expect(usersArr).toBeInstanceOf(Array);
-                usersArr.forEach(user => {
-                    expect(user).toEqual(
-                        expect.objectContaining({
-                            username: expect.any(String),
-                            name: expect.any(String),
-                            avatar_url: expect.any(String, null)
-                        })
-                    )
-                })
-            })
-        })
-    })
-}) 
 
 describe('9. GET /api/articles (queries)', () => {
     describe('200 status & get data', () => {
