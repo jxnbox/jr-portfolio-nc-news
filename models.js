@@ -9,8 +9,24 @@ exports.getTopicModel = () => {
         })
 }
 
-exports.getArticleModel = () => {
-    return db.query('SELECT articles.article_id, title, topic, articles.author, articles.body, articles.created_at, articles.votes, COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY created_at DESC;')
+exports.getArticleModel = (query) => {
+    const queryValues = [];
+    const {topic, limit, order} = query
+
+    let SQL = 'SELECT articles.article_id, title, topic, articles.author, articles.body, articles.created_at, articles.votes, COUNT(comments.article_id) AS comment_count FROM articles LEFT JOIN comments ON articles.article_id = comments.article_id GROUP BY articles.article_id ORDER BY created_at DESC ';
+
+    if (limit) {
+        queryValues.push(limit)
+        SQL += 'LIMIT $1 ';
+    }
+
+    if (queryValues.includes(limit) && topic) {
+        queryValues.push(topic)
+        SQL += `WHERE topic = $${queryValues.length}`;
+    }
+
+    console.log(SQL)
+    return db.query(SQL, queryValues)
     .then( (articles) => {
         return articles.rows;
     })

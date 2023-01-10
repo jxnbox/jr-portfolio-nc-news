@@ -6,7 +6,8 @@ const {
     postCommentByIdModels,
     postNewUser,
     patchVoteByIdModels,
-    getUsersModel
+    getUsersModel,
+    getArticleQueryModel
 } = require('./models')
 
 exports.getTopic = (req, res, next) => {
@@ -18,11 +19,19 @@ exports.getTopic = (req, res, next) => {
 }
 
 exports.getArticle = (req, res, next) => {
-    getArticleModel()
-    .then((articles) => {
-        res.status(200).send({articles});
-    })
-    .catch(next);
+    if (!req.query) {
+        getArticleModel()
+        .then((articles) => {
+            res.status(200).send({articles});
+        })
+        .catch(next);
+    } else {
+        getArticleModel(req.query)
+        .then((articles) => {
+            res.status(200).send({articles});
+        })
+        .catch(next);
+    }
 }
 
 exports.getArticleById = (req, res, next) => {
@@ -84,8 +93,4 @@ exports.getUsers = (req, res, next) => {
         res.status(200).send(users)
     })
     .catch(next);
-}
-
-exports.getArticleQuery = (req, res, next) => {
-    console.log(req.query)
 }

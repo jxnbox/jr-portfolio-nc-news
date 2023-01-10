@@ -405,16 +405,17 @@ describe('8. GET /api/users', () => {
     })
 }) 
 
-describe('9. GET /api/articles (queries)', () => {
+describe.only('9. GET /api/articles (queries)', () => {
     describe('200 status & get data', () => {
         it('return articles that matches the query provied from a user', () => {
 
             return request(app)
-            .get('/api/articles?topic=cats')
+            .get('/api/articles?limit=5')
             .expect(200)
             .then( (res) => {
-                const articles = res.body;
-                articles
+                const {articles} = res.body;
+                console.log(articles)
+                expect(articles.length).toBe(5)
             })
         })
     })
