@@ -98,7 +98,7 @@ exports.getUsers = (req, res, next) => {
 exports.getAllArticlesId = (req, res, next) => {
     getAllArticlesIdModel()
     .then( (article_id) => {
-        res.status(200).send({article_id})
+        res.status(200).send(article_id)
     })
     .catch(next);
 
