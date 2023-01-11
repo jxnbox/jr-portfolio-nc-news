@@ -73,7 +73,7 @@ describe('2. GET api/articles', () => {
     })   
 })
 
-describe('3. GET api/articles/:article_id', () => {
+describe.only('3. GET api/articles/:article_id', () => {
     describe('a. status 200 & data', () => {
         it('returns 200 status code & the article data object with the corresponding article_id back to the user', () => {
             return request(app)
@@ -81,6 +81,7 @@ describe('3. GET api/articles/:article_id', () => {
             .expect(200)
             .then( (res) => {
                 const {article} = res.body;
+                console.log(article)
                 expect(article).toEqual(
                     expect.objectContaining({
                         article_id : 3,
@@ -90,6 +91,7 @@ describe('3. GET api/articles/:article_id', () => {
                         body : 'some gifs',
                         created_at : '2020-11-03T09:12:00.000Z',
                         votes : 0,
+                        comment_count: '2'
                     })
                 )
                 
@@ -405,7 +407,7 @@ describe('8. GET /api/users', () => {
     })
 }) 
 
-describe.only('9. GET /api/articles (queries)', () => {
+describe('9. GET /api/articles (queries)', () => {
     describe('200 status & get data', () => {
         it('return articles that matches the query provied from a user', () => {
 
