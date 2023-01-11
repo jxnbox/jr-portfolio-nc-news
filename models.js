@@ -134,7 +134,7 @@ exports.getUsersModel = () => {
 }
 
 exports.getAllArticlesIdModel = () => {
-    return db.query('SELECT article_id FROM articles ORDER BY created_at;')
+    return db.query('SELECT article_id FROM articles ORDER BY created_at DESC;')
     .then( (article_id) => {
         console.log(article_id.rows)
         return article_id.rows;
