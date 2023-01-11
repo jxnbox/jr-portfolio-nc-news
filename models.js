@@ -132,3 +132,11 @@ exports.getUsersModel = () => {
         return users.rows;
     })
 }
+
+exports.getAllArticlesIdModel = () => {
+    return db.query('SELECT article_id FROM articles ORDER BY created_at;')
+    .then( (article_id) => {
+        return article_id.rows;
+    })
+}
+

@@ -73,7 +73,7 @@ describe('2. GET api/articles', () => {
     })   
 })
 
-describe.only('3. GET api/articles/:article_id', () => {
+describe('3. GET api/articles/:article_id', () => {
     describe('a. status 200 & data', () => {
         it('returns 200 status code & the article data object with the corresponding article_id back to the user', () => {
             return request(app)
@@ -407,12 +407,12 @@ describe('8. GET /api/users', () => {
     })
 }) 
 
-describe('9. GET /api/articles (queries)', () => {
+describe.only('9. GET /api/articles (queries)', () => {
     describe('200 status & get data', () => {
         it('return articles that matches the query provied from a user', () => {
 
             return request(app)
-            .get('/api/articles?limit=5')
+            .get('/api/articles?limit=5&topic=cat')
             .expect(200)
             .then( (res) => {
                 const {articles} = res.body;
