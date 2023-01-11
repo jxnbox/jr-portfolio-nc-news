@@ -27,7 +27,7 @@ app.get('/api/articles', getArticle);
 app.get('/api/articles/:article_id', getArticleById);
 app.get('/api/articles/:article_id/comments', getCommentsById);
 app.get('/api/users', getUsers);
-app.get('/api/articles/articles-id', getAllArticlesId);
+app.get('/api/articles-id', getAllArticlesId);
 
 app.post('/api/users', postNewUser)
 app.post('/api/articles/:article_id/comments', postCommentById)
